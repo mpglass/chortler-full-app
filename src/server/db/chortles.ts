@@ -6,12 +6,15 @@ const one = async (id: number) => Query('SELECT * FROM Chortles WHERE id = ?', [
 
 const insert = (userid: number, content: string) => Query('INSERT INTO Chortles (userid, content) VALUE (?, ?)',[userid, content]);
 
-//  const update = (userid: number, content: string) => Query('UPDATE Chortles SET (userid?, content?) VALUE = '' WHERE id = ',[]);
-// const insert = () => Query('',[]);
+const update = (content: string, id: number) => Query('UPDATE Chortles SET content = ? WHERE id = ?',[content, id]);
+
+const destroy = (id:number) => Query('DELETE FROM Chortles WHERE id = ?',[id]);
 
 
 export default {
     all,
     one, 
-    insert
+    insert, 
+    update, 
+    destroy
 };

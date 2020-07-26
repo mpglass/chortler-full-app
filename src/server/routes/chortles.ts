@@ -24,10 +24,33 @@ router.post('/', async (req, res) => {
   const newChortle = req.body;
   try { 
     const cannedResponse = await db.Chortles.insert(newChortle.userid, newChortle.content);
-    res.status(201).json({ msg: 'new Chortle created', id: cannedResponse });
+    res.status(201).json({ msg: 'new Chortle created', id: cannedResponse.insertId });
   } catch (error) {
     console.log(error);
     res.status(500).json({msg:'Lady ate my code...please let me know', error});
+  }
+});
+
+router.put('/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  const updatedChortle = req.body;
+  try { 
+    const cannedResponse = await db.Chortles.update(updatedChortle.content, id);
+    res.json({ msg: 'Chortle updated', id, cannedResponse });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({msg:'Lady ate my code...please let me know', error});
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  const id = Number(req.params.id); 
+  try {
+    await db.Chortles.destroy(id); 
+    res.json({ msg: 'note deleted', id });
+  } catch (error) {
+    console.log(error); 
+    res.status(500).json({ msg: 'Lady ate my code...please let me know', error});
   }
 });
 
