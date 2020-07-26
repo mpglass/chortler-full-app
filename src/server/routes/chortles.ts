@@ -1,44 +1,34 @@
 import * as express from "express";
-
 import db from "../db";
 
 const router = express.Router();
 
 
-router.get('/', async (req, res) => {
-  try {
-    const chortles = await db.Chortles.all()
-    res.json(chortles);
-    // res.json(await db.Chortles.all());
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({msg:'Lady ate my code...please let me know', error});
-  }
-});
-
-router.get('/:id', async (req, res) => {
+router.get('/:id?', async (req, res) => {
   const chortleid = Number(req.params.id);
   try {
-    const [chortle] = await db.Chortles.one(chortleid);
+    if (chortleid) {
+      const [chortle] = await db.Chortles.one(chortleid);
     res.json(chortle);
+    } else {
+      const chortles = await db.Chortles.all()
+    res.json(chortles);
+    }
   } catch (error) {
     console.log(error);
     res.sendStatus(500).json({msg:'Lady ate my code...please let me know', error});
   }
 });
 
+router.post('/', async (req, res) => {
+  const newChortle = req.body;
+  try { 
+    const cannedResponse = await db.Chortles.insert(newChortle.userid, newChortle.content);
+    res.status(201).json({ msg: 'new Chortle created', id: cannedResponse });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({msg:'Lady ate my code...please let me know', error});
+  }
+});
+
 export default router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
