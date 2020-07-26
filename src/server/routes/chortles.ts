@@ -5,7 +5,7 @@ import db from "../db";
 const router = express.Router();
 
 
-router.get("/api/chortles", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const chortles = await db.Chortles.all()
     res.json(chortles);
@@ -16,7 +16,7 @@ router.get("/api/chortles", async (req, res) => {
   }
 });
 
-router.get("/api/chortles/:id", async (req, res) => {
+router.get('/:id', async (req, res) => {
   const chortleid = Number(req.params.id);
   try {
     const [chortle] = await db.Chortles.one(chortleid);
